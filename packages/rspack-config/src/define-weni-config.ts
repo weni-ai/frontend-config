@@ -15,7 +15,11 @@ import {
   formatRemotes,
   toPosixPath,
 } from './helpers.js';
-import type { WeniConfigOptions, WeniRspackConfig } from './options.js';
+import type {
+  WeniConfigOptions,
+  WeniPostcssOptions,
+  WeniRspackConfig,
+} from './options.js';
 
 type StyleLoaderItem = string | { loader: string; options?: Record<string, unknown> };
 
@@ -34,33 +38,49 @@ function isDev(): boolean {
   return process.env.NODE_ENV === 'development';
 }
 
-function resolvePostcssPrefix(
+function resolvePostcssOptions(
   postcss: WeniConfigOptions['postcss'],
-): string | undefined {
+): WeniPostcssOptions | undefined {
   if (!postcss) return undefined;
   if (postcss === true) {
     throw new Error(
       "@weni/rspack-config: `postcss: true` needs a prefix. Use `postcss: { prefix: '.your-app' }`.",
     );
   }
-  return postcss.prefix;
+  return postcss;
 }
 
 /**
  * Inline postcss-loader options so consumers can drop `postcss.config.js`.
  * `postcss-prefixwrap` is required lazily so apps that skip `postcss` do not
  * need the peer installed.
+ *
+ * Never pass `prefixRootTags: true`: on postcss-prefixwrap@1.58.0 it emits
+ * invalid selectors like `.app .:root`, which drops the unnnic theme block.
  */
-function postcssLoader(prefix: string): StyleLoaderItem {
+function postcssLoader(options: WeniPostcssOptions): StyleLoaderItem {
   const postcssPrefixwrap = require('postcss-prefixwrap') as (
     prefix: string,
+    opts?: {
+      prefixTransform?: WeniPostcssOptions['prefixTransform'];
+      ignoredSelectors?: WeniPostcssOptions['ignoredSelectors'];
+    },
   ) => unknown;
+
+  const { prefix, prefixTransform, ignoredSelectors } = options;
+  const prefixwrapOptions =
+    prefixTransform || ignoredSelectors
+      ? {
+          ...(prefixTransform ? { prefixTransform } : {}),
+          ...(ignoredSelectors ? { ignoredSelectors } : {}),
+        }
+      : undefined;
 
   return {
     loader: 'postcss-loader',
     options: {
       postcssOptions: {
-        plugins: [postcssPrefixwrap(prefix)],
+        plugins: [postcssPrefixwrap(prefix, prefixwrapOptions)],
       },
     },
   };
@@ -194,8 +214,8 @@ export function defineWeniConfig(
   const { dirname: root, port, entry, federation, aliases = {}, plugins = [] } =
     options;
   const dev = isDev();
-  const postcssPrefix = resolvePostcssPrefix(options.postcss);
-  const postcssLoaders = postcssPrefix ? [postcssLoader(postcssPrefix)] : [];
+  const postcssOptions = resolvePostcssOptions(options.postcss);
+  const postcssLoaders = postcssOptions ? [postcssLoader(postcssOptions)] : [];
 
   const config = defineConfig({
     ...(dev ? { devtool: 'eval-cheap-module-source-map' } : {}),

@@ -48,6 +48,23 @@ export default defineWeniConfig({
 
 That inserts `postcss-loader` + `postcss-prefixwrap` into the style chain and replaces `postcss.config.js`. Repos without the option do not load the loader.
 
+`prefixRootTags` is never enabled (breaks `:root` / unnnic on prefixwrap `1.58.0`). Extra prefixwrap knobs when needed:
+
+```ts
+postcss: {
+  prefix: '.chats-webapp',
+  // Keep host `.dark` and scoped `.chats-webapp.dark` both matching
+  prefixTransform: (selector, prefix) => {
+    if (selector.startsWith('.dark')) {
+      return `${prefix} ${selector}, ${prefix}${selector}`;
+    }
+    return `${prefix} ${selector}`;
+  },
+},
+```
+
+Optional: `ignoredSelectors` (also forwarded to prefixwrap).
+
 Named internals (for assembling a config from scratch): `styleRule`, `assetRules`, `basePlugins`, `piniaHmrLoaderPath`.
 
 ## Subpath exports
@@ -80,7 +97,7 @@ Given the usage example above, `defineWeniConfig` builds (invariants in **bold**
 | `federation.remotes.connect` | `connect@<url>/remoteEntry.js` (omitted when the URL is empty) |
 | `pkg.dependencies` | `requiredVersion` for `pinia`, `vue-router`, `vue-i18n` |
 | `PUBLIC_PATH_URL` | `output.publicPath` with a trailing slash, or `/` |
-| `postcss: { prefix }` | `postcss-loader` + `postcss-prefixwrap(prefix)` on CSS/SCSS (omit or `false` to skip) |
+| `postcss: { prefix }` | `postcss-loader` + `postcss-prefixwrap(prefix)` on CSS/SCSS (omit or `false` to skip). Optional `prefixTransform` / `ignoredSelectors` |
 
 Always included, not optional:
 

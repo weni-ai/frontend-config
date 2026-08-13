@@ -31,6 +31,16 @@ export interface WeniPostcssOptions {
    * via `postcss-prefixwrap` (e.g. `.bulk-send-webapp`, `.chats-webapp`).
    */
   prefix: string;
+  /**
+   * Forwarded to `postcss-prefixwrap`.
+   * Chats uses this so `.dark …` selectors keep working under the mount class.
+   */
+  prefixTransform?: (selector: string, prefix: string) => string;
+  /**
+   * Forwarded to `postcss-prefixwrap`.
+   * Leave `html` / `body` / `*` unprefixed when document-level resets must stay global.
+   */
+  ignoredSelectors?: (string | RegExp)[];
 }
 
 export type WeniRspackConfig = Configuration;
