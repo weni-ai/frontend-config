@@ -1,0 +1,31 @@
+{
+  "name": "frontend-config",
+  "version": "0.0.1",
+  "private": false,
+  "description": "Shared frontend tooling for Weni microfrontends",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "npm run build && changeset publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weni-ai/frontend-config.git"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^2.29.5",
+    "@types/node": "^22.15.0",
+    "typescript": "~5.8.0"
+  }
+}
