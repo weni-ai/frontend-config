@@ -75,6 +75,22 @@ Named internals (for assembling a config from scratch): `styleRule`, `assetRules
 | `@weni/rspack-config/hmr` | `registerStoreHMR` (runtime, bundled into the app) |
 | `@weni/rspack-config/types` | `ImportMeta.webpackHot` |
 
+## Local testing
+
+Install a packed copy, not a symlink:
+
+```bash
+# in frontend-config
+npm run build
+
+# in the app
+npm install -D file:../frontend-config/packages/rspack-config --install-links
+```
+
+A plain `file:` install symlinks the package, so Node resolves `@rspack/core` from `frontend-config/node_modules` instead of the app. Two copies break Module Federation at runtime — the build succeeds and the browser throws `should have __webpack_require__.f.consumes`. The preset checks for this and fails early; bypass with `WENI_RSPACK_SKIP_PEER_CHECK=1`.
+
+Re-run the install after every package rebuild.
+
 ## Debug
 
 ```bash

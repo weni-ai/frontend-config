@@ -11,6 +11,7 @@ import HtmlRspackPlugin from 'html-rspack-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
 
 import {
+  assertSingleRspackCore,
   canonicalPublicPath,
   formatRemotes,
   toPosixPath,
@@ -209,6 +210,8 @@ function debugConfig(config: WeniRspackConfig): void {
 export function defineWeniConfig(
   options: WeniConfigOptions,
 ): WeniRspackConfig {
+  assertSingleRspackCore(options.dirname);
+
   dotenv.config({ path: join(options.dirname, '.env') });
 
   const { dirname: root, port, entry, federation, aliases = {}, plugins = [] } =
