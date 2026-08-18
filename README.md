@@ -6,7 +6,7 @@ Shared frontend tooling for Weni microfrontends. Published on npm under the `@we
 
 | Package | Status | Description |
 | --- | --- | --- |
-| [`@weni/rspack-config`](./packages/rspack-config) | v0.1.0 (unreleased) | Shared Rspack preset (`defineWeniConfig`) |
+| [`@weni/rspack-config`](./packages/rspack-config) | v0.0.0 | Shared Rspack preset (`defineWeniConfig`) |
 | `@weni/vitest-config` | later | Shared Vitest preset |
 | `@weni/eslint-config` | later | Migrated from the standalone repo |
 
@@ -24,4 +24,9 @@ Local consumers can point at the package with `file:` or `npm link` after `npm r
 
 ## Release
 
-Changesets open a version PR on `main`. Merging that PR publishes `@weni/*` to npm.
+Publishing is handled by [Changesets](https://github.com/changesets/changesets) and npm Trusted Publishing (OIDC).
+
+1. In the feature branch, run `npm run changeset` and commit the generated file under `.changeset/`.
+2. Open a PR. CI runs `typecheck`, `build`, and `changeset status`.
+3. Merge the PR into `main`. The Release workflow opens (or updates) a Release PR with version bumps and changelog entries.
+4. Merge the Release PR. The same workflow publishes the packages to npm and creates git tags.

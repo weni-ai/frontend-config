@@ -1,7 +1,7 @@
 {
   "name": "frontend-config",
   "version": "0.0.1",
-  "private": false,
+  "private": true,
   "description": "Shared frontend tooling for Weni microfrontends",
   "license": "MIT",
   "type": "module",
@@ -15,6 +15,7 @@
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "changeset": "changeset",
+    "changeset:status": "changeset status --since=origin/main",
     "version-packages": "changeset version",
     "release": "npm run build && changeset publish"
   },
