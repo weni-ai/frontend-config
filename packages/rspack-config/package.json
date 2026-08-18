@@ -1,6 +1,6 @@
 {
   "name": "@weni/rspack-config",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Shared Rspack preset for Weni microfrontends",
   "license": "MIT",
   "type": "module",
@@ -57,9 +57,15 @@
     "vue-style-loader": "^4.1.0"
   },
   "peerDependenciesMeta": {
-    "postcss": { "optional": true },
-    "postcss-loader": { "optional": true },
-    "postcss-prefixwrap": { "optional": true }
+    "postcss": {
+      "optional": true
+    },
+    "postcss-loader": {
+      "optional": true
+    },
+    "postcss-prefixwrap": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@rspack/cli": "^1.1.5",
