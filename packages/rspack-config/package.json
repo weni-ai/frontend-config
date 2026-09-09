@@ -1,6 +1,6 @@
 {
   "name": "@weni/rspack-config",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Shared Rspack preset for Weni microfrontends",
   "license": "MIT",
   "type": "module",
