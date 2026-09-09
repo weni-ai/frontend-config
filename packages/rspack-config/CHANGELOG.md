@@ -1,5 +1,11 @@
 # @weni/rspack-config
 
+## 0.1.1
+
+### Patch Changes
+
+- [#2](https://github.com/weni-ai/frontend-config/pull/2) [`c7abbfd`](https://github.com/weni-ai/frontend-config/commit/c7abbfdf4344745c51aa8b9cf0594373d57be643) Thanks [@mateuseduardomedeiros](https://github.com/mateuseduardomedeiros)! - Removal of pinia and vue-router from default shared dependencies
+
 ## 0.1.0
 
 ### Minor Changes
