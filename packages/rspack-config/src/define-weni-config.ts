@@ -173,14 +173,6 @@ export function basePlugins(
           requiredVersion: '^3.0.0',
           eager: true,
         },
-        pinia: {
-          singleton: true,
-          requiredVersion: pkg.dependencies?.pinia,
-        },
-        'vue-router': {
-          singleton: true,
-          requiredVersion: pkg.dependencies?.['vue-router'],
-        },
         'vue-i18n': {
           singleton: true,
           requiredVersion: pkg.dependencies?.['vue-i18n'],
